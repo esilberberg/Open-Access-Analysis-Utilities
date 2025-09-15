@@ -98,7 +98,7 @@ def build_articles_oa_overview(orcid):
             print(f"Error decoding JSON response: {e}")
             return None
 
-    with open('article_oa_status_finder/api-jisc.txt') as f:
+    with open('api-jisc.txt') as f:
             api_jisc = f.read()
 
     def get_jisc_data(issn):
@@ -116,7 +116,6 @@ def build_articles_oa_overview(orcid):
 
     # ----------- Start of logic -----------
     orcid_record = get_orcid_data(orcid)
-    print(orcid_record)
 
     if not orcid_record:
         print("Could not retrieve ORCID record.")
@@ -129,11 +128,12 @@ def build_articles_oa_overview(orcid):
         print(f"\nNo works found for {author_name}.")
         return pd.DataFrame()
     
-
     for work in works:
         title = work.get('title', {}).get('title', {}).get('value', 'No title')
         year = work.get('publication-date', {}).get('year', {}).get('value', 'No year')
         journal = work.get('journal-title', {}).get('value', 'No journal') if work.get('journal-title') else 'No journal'
+        pub_type = work.get('type', {})
+        pub_type = pub_type.replace('-', ' ').title()
         doi = find_doi(work.get('external-ids', {}))
         
         is_oa = 'Unknown'
@@ -188,6 +188,7 @@ def build_articles_oa_overview(orcid):
                     'DOI': doi,
                     'Article': title,
                     'Year': year,
+                    'Publication Type': pub_type,
                     'Journal': journal,
                     'ISSN-L': issn_l,
                     'OA Status': is_oa,
@@ -197,7 +198,7 @@ def build_articles_oa_overview(orcid):
             full_article_information.append(row_data)
 
 
-    df = pd.DataFrame(full_article_information, columns=['ORCID', 'Author', 'DOI', 'Article', 'Year', 'Journal', 'ISSN-L', 'OA Status', 'Journal Permissions'])
+    df = pd.DataFrame(full_article_information, columns=['ORCID', 'Author', 'DOI', 'Article', 'Year', 'Publication Type', 'Journal', 'ISSN-L', 'OA Status', 'Journal Permissions'])
     return df
 
-build_articles_oa_overview('0000-0002-2677-8801')
+# build_articles_oa_overview('0000-0002-2677-8801')
