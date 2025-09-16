@@ -200,5 +200,3 @@ def build_articles_oa_overview(orcid):
 
     df = pd.DataFrame(full_article_information, columns=['ORCID', 'Author', 'DOI', 'Article', 'Year', 'Publication Type', 'Journal', 'ISSN-L', 'OA Status', 'Journal Permissions'])
     return df
-
-# build_articles_oa_overview('0000-0002-2677-8801')
