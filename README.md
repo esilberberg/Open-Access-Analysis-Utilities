@@ -1,16 +1,25 @@
-# Open Access Analysis Utilities
-This repository includes two scripts that analyze the open access (OA) policies of scholarly publications in the hope of encouraging researchers and authors to self-deposit their published work in institutional repositories. 
+# AI-Assisted Open Access Policy Finder
 
-## AI Journal OA Policy Finder
-When evaluating the Green OA (self-archiving) potential of a researcher's publications, one approach is to analyze the OA policies of the journals where their articles were published. 
+## Overview
+The `ai_assisted_oa_policy_finder.py` script is a Python tool designed to automate the process of analyzing open access (OA) policies for a list of academic citations. It leverages the power of AI to extract journal names and then queries the JISC Open Policy Finder API to retrieve detailed OA policies.
 
-As citation formatting on a CV can be inconsistent, this script uses [Google's Gemini LLM API](https://ai.google.dev/gemini-api/docs) to extract the correct journal name from each citation. It then queries the [JISC Open Policy Finder API](https://www.sherpa.ac.uk/api/) to retrieve each journal's specific OA policies, and produces a report detailing which publications are eligible for self-archiving.
+This script is particularly useful for researchers, librarians, and students who need to understand the publication rights and open access requirements for their work.
 
-### Dependencies
-API keys for the Gemini and JISC Open Policy Finder.
+## How it works
 
-## Article OA Status Finder
-This script automates the process of generating a report on a researcher's publications and their OA status. The script retrieves a list of a researcher's published works and their DOIs by searching an author's ORCID on the [ORCID API](https://info.orcid.org/what-is-orcid/services/public-api/). It then queries the [Unpaywall API](https://unpaywall.org/products/api) to determine the OA status of each article, and uses the [JISC Open Policy Finder API](https://www.sherpa.ac.uk/api/) to find detailed self-archiving permissions from the relevant journals. The final output is a comprehensive report on the author's publications, detailing their OA status and the permissions for each journal.
+- **Extracts Journal Names:** The script uses [Google's Gemini LLM API](https://ai.google.dev/gemini-api/docs) to analyze a list of citations provided in a spreadsheet. It isolates the journal name from each citation, handling abbreviations and other variations.
 
-### Dependencies
-API key for JISC Open Policy Finder.
+- **Queries OA Policies:** Using the extracted journal names, the script calls the [JISC Open Policy Finder API](https://www.sherpa.ac.uk/api/) to retrieve OA policies for each journal.
+
+- **Generates a Report:** The script compiles all the information into a single, text file, `QCL_CV_OA_Report.txt`, which includes details on article versions, embargo periods, fees, and conditions.
+
+## Dependencies
+- Google AI Studio API Key
+- JISC Open Policy Finder API Key
+- Python Libraries:
+    - google.generativeai
+    - pandas
+
+### Limitations
+The accuracy of the information in the final report is dependent on the data provided by the JISC Open Policy Finder.
+
